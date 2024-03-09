@@ -4,8 +4,10 @@ import { redirect } from "next/navigation";
 
 import { db } from "@/lib/db";
 import { CourseProgress } from "@/components/course-progress";
+import { Button } from "@/components/ui/button";
 
 import { CourseSidebarItem } from "./course-sidebar-item";
+import { CourseGradeButton } from "./course-grade-button";
 
 interface CourseSidebarProps {
   course: Course & {
@@ -41,6 +43,11 @@ export const CourseSidebar = async ({
         <h1 className="font-semibold">
           {course.title}
         </h1>
+        {purchase && (
+          <CourseGradeButton
+            examCount={13}
+          />
+        )}
         {purchase && (
           <div className="mt-10">
             <CourseProgress

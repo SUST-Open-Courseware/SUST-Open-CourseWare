@@ -1,11 +1,20 @@
 import { auth } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
-import { File } from "lucide-react";
+import Link from "next/link";
+import { File, FileQuestion } from "lucide-react";
 
 import { getChapter } from "@/actions/get-chapter";
 import { Banner } from "@/components/banner";
 import { Separator } from "@/components/ui/separator";
 import { Preview } from "@/components/preview";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table"
 
 import { VideoPlayer } from "./_components/video-player";
 import { CourseEnrollButton } from "./_components/course-enroll-button";
@@ -16,16 +25,18 @@ const ChapterIdPage = async ({
 }: {
   params: { courseId: string; chapterId: string }
 }) => {
+
   const { userId } = auth();
-  
+
   if (!userId) {
     return redirect("/");
-  } 
+  }
 
   const {
     chapter,
     course,
     muxData,
+    quizes,
     attachments,
     nextChapter,
     userProgress,
@@ -40,11 +51,10 @@ const ChapterIdPage = async ({
     return redirect("/")
   }
 
-
   const isLocked = !chapter.isFree && !purchase;
   const completeOnEnd = !!purchase && !userProgress?.isCompleted;
 
-  return ( 
+  return (
     <div>
       {userProgress?.isCompleted && (
         <Banner
@@ -89,6 +99,40 @@ const ChapterIdPage = async ({
               />
             )}
           </div>
+          {!!quizes.length && (
+            <>
+              <Separator />
+              <div className="p-4">
+                <div className="rounded-md border">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead><div className="text-l"> Practice Tests</div></TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {quizes.map((quiz, index) => (
+                        <TableRow key={index}>
+                          <TableCell>
+                            <div className="flex space-x-2">
+                              <FileQuestion />
+                              <Link
+                                href={`/courses/${params.courseId}/quizes/${quiz.id}`}
+                              >
+                                Practice Exam {index + 1}
+                              </Link>                            </div>
+                          </TableCell>
+                          <TableCell>30 questions</TableCell>
+                          <TableCell>-</TableCell>
+                        </TableRow>
+                      ))
+                      }
+                    </TableBody>
+                  </Table>
+                </div>
+              </div>
+            </>
+          )}
           <Separator />
           <div>
             <Preview value={chapter.description!} />
@@ -98,7 +142,7 @@ const ChapterIdPage = async ({
               <Separator />
               <div className="p-4">
                 {attachments.map((attachment) => (
-                  <a 
+                  <a
                     href={attachment.url}
                     target="_blank"
                     key={attachment.id}
@@ -116,7 +160,7 @@ const ChapterIdPage = async ({
         </div>
       </div>
     </div>
-   );
+  );
 }
- 
+
 export default ChapterIdPage;

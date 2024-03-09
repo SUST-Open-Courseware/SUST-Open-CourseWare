@@ -6,15 +6,16 @@ import { Pencil, PlusCircle, ImageIcon, File, Loader2, X } from "lucide-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
-import { Attachment, Course } from "@prisma/client";
+import { Attachment, Chapter } from "@prisma/client";
 import Image from "next/image";
 
 import { Button } from "@/components/ui/button";
 import { FileUpload } from "@/components/file-upload";
 
 interface AttachmentFormProps {
-  initialData: Course & { attachments: Attachment[] };
+  initialData: Chapter & { attachments: Attachment[] };
   courseId: string;
+  chapterId: string;
 };
 
 const formSchema = z.object({
@@ -23,7 +24,8 @@ const formSchema = z.object({
 
 export const AttachmentForm = ({
   initialData,
-  courseId
+  courseId,
+  chapterId
 }: AttachmentFormProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const [deletingId, setDeletingId] = useState<string | null>(null);
@@ -34,7 +36,7 @@ export const AttachmentForm = ({
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      await axios.post(`/api/courses/${courseId}/attachments`, values);
+      await axios.post(`/api/courses/${courseId}/chapters/${chapterId}/attachments`, values);
       toast.success("Course updated");
       toggleEdit();
       router.refresh();
@@ -46,7 +48,7 @@ export const AttachmentForm = ({
   const onDelete = async (id: string) => {
     try {
       setDeletingId(id);
-      await axios.delete(`/api/courses/${courseId}/attachments/${id}`);
+      await axios.delete(`/api/courses/${courseId}/chapters/${chapterId}/attachments/${id}`);
       toast.success("Attachment deleted");
       router.refresh();
     } catch {
