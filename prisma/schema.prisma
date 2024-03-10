@@ -109,18 +109,33 @@ model Question {
 }
 
 model Game {
-  id     String @id @default(uuid()) @map("_id")
-  userId String
-  score  Int?
+  id           String    @id @default(uuid()) @map("_id")
+  userId       String
 
-  quizId String
-  quiz   Quiz   @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  quizId       String
+  quiz         Quiz     @relation(fields: [quizId], references: [id], onDelete: Cascade)
 
-  timeStarted DateTime
-  timeEnded   DateTime?
+  timeStarted  DateTime
+  timeEnded    DateTime?
+
+  results      GameResult[]
 
   @@index([userId])
 }
+
+model GameResult {
+  id        String  @id @default(uuid()) @map("_id")
+  questionId String
+  userAnswer String
+  isCorrect  Boolean
+
+  gameId     String
+  game       Game    @relation(fields: [gameId], references: [id], onDelete: Cascade)
+
+  @@index([questionId])
+}
+
+
 
 model MuxData {
   id         String  @id @default(uuid()) @map("_id")

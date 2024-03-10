@@ -11,7 +11,7 @@ export async function POST(req: Request, res: Response) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
     const body = await req.json();
-    const { questionId, userInput } = checkAnswerSchema.parse(body);
+    const { questionId, gameId, userInput } = checkAnswerSchema.parse(body);
     const question = await db.question.findUnique({
       where: { id: questionId },
     });
@@ -28,6 +28,15 @@ export async function POST(req: Request, res: Response) {
 
     const isCorrect =
       question.answer.toLowerCase().trim() === userInput.toLowerCase().trim();
+
+    await db.gameResult.create({
+      data: {
+        questionId: questionId,
+        userAnswer: userInput.toLowerCase(),
+        isCorrect: isCorrect,
+        gameId: gameId
+      }
+    })
 
     return NextResponse.json({
       isCorrect,

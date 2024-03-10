@@ -23,7 +23,7 @@ type Props = {
   questions: Question[];
 };
 
-const MCQ = ({ game, questions }: Props) => {
+const MCQ = ({game, questions }: Props) => {
   const [questionIndex, setQuestionIndex] = React.useState(0);
   const [hasEnded, setHasEnded] = React.useState(false);
   const [stats, setStats] = React.useState({
@@ -33,7 +33,6 @@ const MCQ = ({ game, questions }: Props) => {
   const [selectedChoice, setSelectedChoice] = React.useState<number>(0);
   const [now, setNow] = React.useState(new Date());
   const [isChecking, setIsChecking] = React.useState(false);
-  const [currentScore, setCurrentScore] = React.useState(0);
 
   const currentQuestion = React.useMemo(() => {
     return questions[questionIndex];
@@ -45,10 +44,6 @@ const MCQ = ({ game, questions }: Props) => {
     return currentQuestion.options;
   }, [currentQuestion]);
 
-  React.useEffect(() => {
-    setCurrentScore(stats.correct_answers); // Update the current score
-  }, [stats]);
-
   const { toast } = useToast();
 
   const checkAnswer = React.useCallback(
@@ -57,6 +52,7 @@ const MCQ = ({ game, questions }: Props) => {
       try {
         const payload: z.infer<typeof checkAnswerSchema> = {
           questionId: currentQuestion.id,
+          gameId: game.id,
           userInput: options[selectedChoice],
         };
         const response = await axios.post(`/api/game/checkAnswer`, payload);
@@ -103,14 +99,13 @@ const MCQ = ({ game, questions }: Props) => {
       try {
         const payload: z.infer<typeof endGameSchema> = {
           gameId: game.id,
-          score: currentScore, // Use the current score instead of stats.correct_answers
         };
         await axios.post(`/api/game/endGame`, payload);
       } catch (error) {
         console.error("Error ending game:", error);
       }
     },
-    [currentScore, game.id]
+    [game.id]
   );
 
   React.useEffect(() => {
@@ -161,7 +156,7 @@ const MCQ = ({ game, questions }: Props) => {
           {formatTimeDelta(differenceInSeconds(now, game.timeStarted))}
         </div>
         <Link
-          href={`/statistics/${game.id}`}
+          href={`${game.id}/statistic`}
           className={cn(buttonVariants({ size: "lg" }), "mt-2")}
         >
           View Statistics

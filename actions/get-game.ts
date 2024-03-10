@@ -1,6 +1,6 @@
 import { db } from "@/lib/db";
 
-interface GetQuestionProps {
+interface GetGameProps {
     userId: string,
     gameId: string;
 };
@@ -8,7 +8,7 @@ interface GetQuestionProps {
 export const getGame = async ({
     userId,
     gameId
-}: GetQuestionProps) => {
+}: GetGameProps) => {
     try {
         const game = await db.game.findUnique({
             where: {
