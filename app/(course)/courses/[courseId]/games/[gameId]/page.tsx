@@ -1,23 +1,33 @@
 import { auth } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 
+import { getGame } from "@/actions/get-game";
 import { getQuestions } from "@/actions/get-questions";
+import MCQ from "./_components/MCQ";
 
-const QuizIdPage = async ({
+const gameIdPage = async ({
     params
 }: {
-    params: { courseId: string; quizId: string }
+    params: { courseId: string; gameId: string }
 }) => {
+
     const { userId } = auth();
     if (!userId) {
         return redirect("/");
     }
+
+    const { game } = await getGame({ userId, gameId: params.gameId });
+
+    if (!game) {
+        return redirect("/");
+    }
+
     const {
         questions,
     } = await getQuestions({
         userId,
         courseId: params.courseId,
-        quizId: params.quizId
+        quizId: game?.quizId || "",
     })
 
     if (!questions) {
@@ -26,11 +36,9 @@ const QuizIdPage = async ({
 
     return (
         <>
-            {questions && questions.map((question) => (
-                <div key={question.id}> {question.text} </div>
-            ))}
+            <MCQ game={game} questions={questions} />
         </>
     )
 };
 
-export default QuizIdPage;
+export default gameIdPage;

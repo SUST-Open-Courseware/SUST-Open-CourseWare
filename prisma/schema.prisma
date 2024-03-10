@@ -48,13 +48,12 @@ model Chapter {
   courseId String
   course   Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
 
-  quizes      Quiz[]
-  attachments Attachment[]
+  quizes       Quiz[]
+  attachments  Attachment[]
   userProgress UserProgress[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
 
   @@index([courseId])
 }
@@ -96,16 +95,31 @@ model Quiz {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  Game      Game[]
 }
 
 model Question {
   id      String   @id @default(uuid()) @map("_id")
   text    String
   options String[]
-  answer  Int
+  answer  String
 
   quizId String
   quiz   Quiz   @relation(fields: [quizId], references: [id], onDelete: Cascade)
+}
+
+model Game {
+  id     String @id @default(uuid()) @map("_id")
+  userId String
+  score  Int?
+
+  quizId String
+  quiz   Quiz   @relation(fields: [quizId], references: [id], onDelete: Cascade)
+
+  timeStarted DateTime
+  timeEnded   DateTime?
+
+  @@index([userId])
 }
 
 model MuxData {

@@ -117,7 +117,7 @@ const ChapterIdPage = async ({
                             <div className="flex space-x-2">
                               <FileQuestion />
                               <Link
-                                href={`/courses/${params.courseId}/quizes/${quiz.id}`}
+                                href={`/courses/${params.courseId}/games?quizId=${quiz.id}`}
                               >
                                 Practice Exam {index + 1}
                               </Link>                            </div>
