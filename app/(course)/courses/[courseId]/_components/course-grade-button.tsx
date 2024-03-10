@@ -9,7 +9,7 @@ export const CourseGradeButton = ({ examCount }: CourseGradeButtonProps) => {
     <Button
       type="button"
       variant="popup"
-      className="w-full md:w-auto mt-5 relative"
+      className="w-full mt-5 relative"
     >
       Grades
       <span

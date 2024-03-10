@@ -119,7 +119,7 @@ const ChapterIdPage = async ({
                               <Link
                                 href={`/courses/${params.courseId}/games?quizId=${quiz.id}`}
                               >
-                                Practice Exam {index + 1}
+                                {quiz.title}
                               </Link>                            </div>
                           </TableCell>
                           <TableCell>30 questions</TableCell>

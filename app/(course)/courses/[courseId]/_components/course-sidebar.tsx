@@ -5,6 +5,9 @@ import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
 import { CourseProgress } from "@/components/course-progress";
 import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
+import Link from "next/link";
+
 
 import { CourseSidebarItem } from "./course-sidebar-item";
 import { CourseGradeButton } from "./course-grade-button";
@@ -44,9 +47,11 @@ export const CourseSidebar = async ({
           {course.title}
         </h1>
         {purchase && (
-          <CourseGradeButton
-            examCount={13}
-          />
+          <Link href={`/courses/${course.id}/grades`}>
+            <CourseGradeButton
+              examCount={13}
+            />
+          </Link>
         )}
         {purchase && (
           <div className="mt-10">
