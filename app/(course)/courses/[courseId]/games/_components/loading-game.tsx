@@ -40,7 +40,7 @@ const LoadingGame = ({ finished }: Props) => {
   }, [finished]);
 
   return (
-    <div className="flex flex-col items-center">
+    <div className="p-10 flex flex-col items-center">
       <Image src={"/loading.gif"} width={400} height={400} alt="loading" />
       <Progress value={progress} className="w-full mt-4" />
       <h1 className="mt-2 text-xl">{loadingText}</h1>

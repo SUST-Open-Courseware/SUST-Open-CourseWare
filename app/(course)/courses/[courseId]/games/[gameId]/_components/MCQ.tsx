@@ -33,6 +33,7 @@ const MCQ = ({ game, questions }: Props) => {
   const [selectedChoice, setSelectedChoice] = React.useState<number>(0);
   const [now, setNow] = React.useState(new Date());
   const [isChecking, setIsChecking] = React.useState(false);
+  const [currentScore, setCurrentScore] = React.useState(0);
 
   const currentQuestion = React.useMemo(() => {
     return questions[questionIndex];
@@ -44,63 +45,73 @@ const MCQ = ({ game, questions }: Props) => {
     return currentQuestion.options;
   }, [currentQuestion]);
 
+  React.useEffect(() => {
+    setCurrentScore(stats.correct_answers); // Update the current score
+  }, [stats]);
+
   const { toast } = useToast();
 
-  const checkAnswer = async () => {
-    setIsChecking(true);
-    try {
-      const payload: z.infer<typeof checkAnswerSchema> = {
-        questionId: currentQuestion.id,
-        userInput: options[selectedChoice],
-      };
-      const response = await axios.post(`/api/game/checkAnswer`, payload);
-      const { isCorrect } = response.data;
+  const checkAnswer = React.useCallback(
+    async (callback: Function) => {
+      setIsChecking(true);
+      try {
+        const payload: z.infer<typeof checkAnswerSchema> = {
+          questionId: currentQuestion.id,
+          userInput: options[selectedChoice],
+        };
+        const response = await axios.post(`/api/game/checkAnswer`, payload);
+        const { isCorrect } = response.data;
 
-      if (isCorrect) {
-        setStats((stats) => ({
-          ...stats,
-          correct_answers: stats.correct_answers + 1,
-        }));
-        toast({
-          title: "Correct",
-          description: "You got it right!",
-          variant: "success",
+        setStats((prevStats) => {
+          if (isCorrect) {
+            return {
+              ...prevStats,
+              correct_answers: prevStats.correct_answers + 1,
+            };
+          } else {
+            return {
+              ...prevStats,
+              wrong_answers: prevStats.wrong_answers + 1,
+            };
+          }
         });
-      } else {
-        setStats((stats) => ({
-          ...stats,
-          wrong_answers: stats.wrong_answers + 1,
-        }));
+
         toast({
-          title: "Incorrect",
-          description: "You got it wrong!",
-          variant: "destructive",
+          title: isCorrect ? "Correct" : "Incorrect",
+          description: isCorrect ? "You got it right!" : "You got it wrong!",
+          variant: isCorrect ? "success" : "destructive",
         });
-      }
 
-      if (questionIndex === questions.length - 1) {
-        await endGame();
-        setHasEnded(true);
-      } else {
-        setQuestionIndex((questionIndex) => questionIndex + 1);
+        if (questionIndex === questions.length - 1) {
+          setHasEnded(true);
+          callback();
+        } else {
+          setQuestionIndex((prevIndex) => prevIndex + 1);
+          callback();
+        }
+      } catch (error) {
+        console.error("Error checking answer:", error);
+      } finally {
+        setIsChecking(false);
       }
-    } catch (error) {
-      console.error("Error checking answer:", error);
-    } finally {
-      setIsChecking(false);
-    }
-  };
+    },
+    [currentQuestion.id, options, selectedChoice, questionIndex, questions.length, toast]
+  );
 
-  const endGame = async () => {
-    try {
-      const payload: z.infer<typeof endGameSchema> = {
-        gameId: game.id,
-      };
-      await axios.post(`/api/game/endGame`, payload);
-    } catch (error) {
-      console.error("Error ending game:", error);
-    }
-  };
+  const endGame = React.useCallback(
+    async () => {
+      try {
+        const payload: z.infer<typeof endGameSchema> = {
+          gameId: game.id,
+          score: currentScore, // Use the current score instead of stats.correct_answers
+        };
+        await axios.post(`/api/game/endGame`, payload);
+      } catch (error) {
+        console.error("Error ending game:", error);
+      }
+    },
+    [currentScore, game.id]
+  );
 
   React.useEffect(() => {
     const interval = setInterval(() => {
@@ -113,8 +124,10 @@ const MCQ = ({ game, questions }: Props) => {
   }, [hasEnded]);
 
   const handleNext = React.useCallback(() => {
-    checkAnswer();
-  }, [checkAnswer]);
+    checkAnswer(() => {
+      endGame();
+    });
+  }, [checkAnswer, endGame]);
 
   React.useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -162,7 +175,7 @@ const MCQ = ({ game, questions }: Props) => {
     <div className="p-10">
       <div className="flex flex-row justify-between">
         <div className="flex flex-col">
-          
+
           <div className="flex self-start mt-3 text-slate-400">
             <Timer className="mr-2" />
             {formatTimeDelta(differenceInSeconds(now, game.timeStarted))}

@@ -6,7 +6,6 @@ import axios, { AxiosError } from "axios";
 import { Button, buttonVariants } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
 import { useRouter } from "next/navigation";
-import { startGameSchema } from '@/lib/game';
 
 import LoadingGame from './_components/loading-game';
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from '@/components/ui/card';
@@ -16,8 +15,6 @@ type ErrorType = {
     description: string;
     variant: "default" | "destructive" | "success" | null | undefined; // Ensure alignment
 };
-
-type Input = z.infer<typeof startGameSchema>;
 
 const GamesPage = ({
     params
@@ -36,33 +33,9 @@ const GamesPage = ({
         if (!params.courseId?.length || !quizId?.length) {
             redirect("/");
         }
+    }, [params.courseId]);
 
-        const fetchData = async () => {
-            setIsLoading(true);
-            setError(null);
-
-            try {
-                const response = await axios.post("/api/game/startGame", { quizId });
-                setGameId(response.data.gameId);
-            } catch (error) {
-                if (error instanceof AxiosError) {
-                    if (error.response?.status === 500) {
-                        setError({
-                            title: "Error",
-                            description: "Something went wrong. Please try again later.",
-                            variant: "destructive",
-                        });
-                    }
-                }
-            } finally {
-                setIsLoading(false);
-            }
-        };
-
-        fetchData();
-    }, [params.courseId, quizId]);
-
-    const handleStartTest = async () => {
+    const handleStartTest = async (onGameStart: Function) => {
         if (!quizId) return;
 
         setIsLoading(true);
@@ -71,9 +44,7 @@ const GamesPage = ({
         try {
             const response = await axios.post("/api/game/startGame", { quizId });
             setGameId(response.data.gameId);
-            setTimeout(() => {
-                router.push(`/courses/${params.courseId}/games/${gameId}`);
-            }, 2000);
+            onGameStart(response.data.gameId);
         } catch (error) {
             if (error instanceof AxiosError) {
                 if (error.response?.status === 500) {
@@ -117,7 +88,7 @@ const GamesPage = ({
                         <p>Number of Questions: 5</p>
                         <p>Quiz Type: Multiple Choice</p>
                     </div>
-                    <Button className="mt-5 w-full" disabled={isLoading} onClick={handleStartTest}>Start Test</Button>
+                    <Button className="mt-5 w-full" disabled={isLoading} onClick={() => handleStartTest((gameId: string) => router.push(`/courses/${params.courseId}/games/${gameId}`))}>Start Test</Button>
                 </CardContent>
             </Card>
         </div>
