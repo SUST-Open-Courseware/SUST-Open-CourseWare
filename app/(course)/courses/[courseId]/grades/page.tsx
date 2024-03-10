@@ -1,3 +1,6 @@
+import { auth } from "@clerk/nextjs";
+import { redirect } from "next/navigation";
+
 import { FileText } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
 import Link from "next/link";
@@ -10,8 +13,34 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
+import { getGrades } from "@/actions/get-grades";
 
-const GradePage = async () => {
+interface GradeParam {
+    courseId: string;
+}
+
+const GradePage = async ({
+    params
+}: {
+    params: { courseId: string; chapterId: string }
+}) => {
+
+
+    const { userId } = auth();
+
+    if (!userId) {
+        return redirect("/");
+    }
+
+    const { grades } = await getGrades({
+        userId: userId,
+        courseId: params.courseId
+    });
+
+    if (!grades) {
+        return redirect("/");
+    }
+
     return (
         <div className="p-8 mx-auto max-w-7xl">
             <div className="flex items-center justify-between space-y-2">
@@ -24,16 +53,24 @@ const GradePage = async () => {
                 </div>
             </div>
 
-                <Table className="mt-4">
-                    <TableHeader>
-                        <TableRow>
-                            <TableHead>Name</TableHead>
-                            <TableHead>Submitted</TableHead>
-                            <TableHead>Score</TableHead>
+            <Table className="mt-4">
+                <TableHeader>
+                    <TableRow>
+                        <TableHead>Name</TableHead>
+                        <TableHead>Submitted</TableHead>
+                        <TableHead>Score</TableHead>
+                    </TableRow>
+                </TableHeader>
+                <TableBody>
+                    {grades && (<>{grades.map((grade, index) => (
+                        <TableRow key={index}>
+                            <TableCell>{grade.quizName}</TableCell>
+                            <TableCell>{grade.submitted}</TableCell>
+                            <TableCell>{grade.score}</TableCell>
                         </TableRow>
-                    </TableHeader>
-                    <TableBody></TableBody>
-                </Table>
+                    ))}</>)}
+                </TableBody>
+            </Table>
         </div>
     )
 };
