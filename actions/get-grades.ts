@@ -36,33 +36,39 @@ export const getGrades = async ({
 
             if (course?.quizes) {
                 for (const quiz of course.quizes) {
-                    const gameResults = await db.gameResult.findMany({
+                    const games = await db.game.findMany({
                         where: {
-                            gameId: {
-                                in: await db.game.findMany({
-                                    where: {
-                                        userId,
-                                        quizId: quiz.id,
-                                    },
-                                }).then((games) => games.map((game) => game.id)),
-                            },
+                            userId,
+                            quizId: quiz.id,
                         },
-                        orderBy: { isCorrect: "desc" }, // Order by isCorrect descending (highest first)
-                        take: 1, // Limit to 1 result (best performing)
                     });
 
-                    if (gameResults.length > 0) {
-                        const bestResult = gameResults[0];
-                        const { game } = await getGame({ userId: userId, gameId: bestResult.gameId });
-                        grades.push({
-                            quizName: quiz.title,
-                            submitted: game?.timeEnded?.toDateString() || " ",
-                            score: gameResults.reduce(
+                    let bestGame = null;
+                    let bestScore = 0;
+
+                    if (games.length > 0) {
+                        for (const game of games) {
+                            const currentResult = await db.gameResult.findMany({
+                                where: { gameId: game.id },
+                            });
+
+                            const currentScore = currentResult.reduce(
                                 (acc, result) => acc + (result.isCorrect ? 1 : 0),
                                 0
-                            ),
-                        });
+                            );
+
+                            if (currentScore > bestScore) {
+                                bestGame = game;
+                                bestScore = currentScore;
+                            }
+                        }
                     }
+
+                    grades.push({
+                        quizName: quiz.title,
+                        submitted: bestGame?.timeEnded?.toDateString() || "-",
+                        score: bestScore,
+                    });
                 }
             }
         }

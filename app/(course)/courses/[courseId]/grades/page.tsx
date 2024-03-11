@@ -1,7 +1,7 @@
 import { auth } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 
-import { FileText } from "lucide-react";
+import { FileText, ShieldCheck } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
 import Link from "next/link";
 import {
@@ -12,6 +12,7 @@ import {
     TableHead,
     TableHeader,
     TableRow,
+    TableFooter,
 } from "@/components/ui/table";
 import { getGrades } from "@/actions/get-grades";
 
@@ -47,6 +48,10 @@ const GradePage = async ({
                 <h2 className="text-3xl font-bold tracking-tight">Grades</h2>
                 <div className="flex items-center space-x-2">
                     <Link href="/dashboard" className={buttonVariants()}>
+                        <ShieldCheck className="mr-2" />
+                        Apply for Certificate
+                    </Link>
+                    <Link href="/dashboard" className={buttonVariants()}>
                         <FileText className="mr-2" />
                         Download PDF
                     </Link>
@@ -54,7 +59,7 @@ const GradePage = async ({
             </div>
 
             <Table className="mt-4">
-                <TableHeader>
+                <TableHeader className="text-l font-bold">
                     <TableRow>
                         <TableHead>Name</TableHead>
                         <TableHead>Submitted</TableHead>
@@ -70,6 +75,13 @@ const GradePage = async ({
                         </TableRow>
                     ))}</>)}
                 </TableBody>
+                <TableFooter className="bg-muted/80 text-primary font-bold">
+                    <TableRow>
+                        <TableCell>Total</TableCell>
+                        <TableCell>98%</TableCell>
+                        <TableCell>1,840.00/1,900.00</TableCell>
+                    </TableRow>
+                </TableFooter>
             </Table>
         </div>
     )
