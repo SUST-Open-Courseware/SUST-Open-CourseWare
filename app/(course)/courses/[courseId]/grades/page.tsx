@@ -33,13 +33,24 @@ const GradePage = async ({
         return redirect("/");
     }
 
-    const { grades } = await getGrades({
+    const { grades, totalScore } = await getGrades({
         userId: userId,
         courseId: params.courseId
     });
 
     if (!grades) {
         return redirect("/");
+    }
+
+    let score: number = grades.reduce((accScore, grade) => {
+        accScore += grade.score;
+        return accScore;
+    }, 0);
+
+    let accuracy: number = 0;
+
+    if (totalScore) {
+        accuracy = (score / totalScore) * 100;
     }
 
     return (
@@ -71,15 +82,15 @@ const GradePage = async ({
                         <TableRow key={index}>
                             <TableCell>{grade.quizName}</TableCell>
                             <TableCell>{grade.submitted}</TableCell>
-                            <TableCell>{grade.score}</TableCell>
+                            <TableCell>{grade.score}/{grade.totalScore}</TableCell>
                         </TableRow>
                     ))}</>)}
                 </TableBody>
                 <TableFooter className="bg-muted/80 text-primary font-bold">
                     <TableRow>
                         <TableCell>Total</TableCell>
-                        <TableCell>98%</TableCell>
-                        <TableCell>1,840.00/1,900.00</TableCell>
+                        <TableCell> {accuracy}%</TableCell>
+                        <TableCell>{score}/{totalScore}</TableCell>
                     </TableRow>
                 </TableFooter>
             </Table>

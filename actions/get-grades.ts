@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import { getGame } from "./get-game";
+import { getQuestions } from "./get-questions";
 
 interface GetGradesProps {
     userId: string;
@@ -10,6 +10,7 @@ type Grade = {
     quizName: string;
     submitted: string;
     score: number;
+    totalScore: number;
 };
 
 export const getGrades = async ({
@@ -27,6 +28,7 @@ export const getGrades = async ({
         });
 
         let grades: Grade[] = [];
+        let totalScore: number = 0;
 
         if (purchase) {
             const course = await db.course.findUnique({
@@ -36,6 +38,12 @@ export const getGrades = async ({
 
             if (course?.quizes) {
                 for (const quiz of course.quizes) {
+
+                    const {questions} = await getQuestions({userId, courseId, quizId: quiz.id});
+                    let quizTotalScore:number = questions.length;
+                    
+                    totalScore += quizTotalScore;
+
                     const games = await db.game.findMany({
                         where: {
                             userId,
@@ -68,13 +76,14 @@ export const getGrades = async ({
                         quizName: quiz.title,
                         submitted: bestGame?.timeEnded?.toDateString() || "-",
                         score: bestScore,
+                        totalScore: quizTotalScore,
                     });
                 }
             }
         }
 
         return {
-            grades,
+            grades, totalScore
         };
     } catch (error) {
         console.log("[GET_GRADES]", error);
