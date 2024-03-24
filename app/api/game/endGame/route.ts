@@ -12,7 +12,7 @@ export async function POST(req: Request, res: Response) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    const { gameId, score } = endGameSchema.parse(body);
+    const { gameId } = endGameSchema.parse(body);
 
     const game = await db.game.findUnique({
       where: {
@@ -36,7 +36,6 @@ export async function POST(req: Request, res: Response) {
         id: gameId,
       },
       data: {
-        score: score,
         timeEnded: new Date(),
       },
     });
