@@ -58,7 +58,7 @@ const GradePage = async ({
             <div className="flex items-center justify-between space-y-2">
                 <h2 className="text-3xl font-bold tracking-tight">Grades</h2>
                 <div className="flex items-center space-x-2">
-                    <Link href="certificate" className={buttonVariants()}>
+                    <Link href="grades/certificate" className={buttonVariants()}>
                         <ShieldCheck className="mr-2" />
                         Apply for Certificate
                     </Link>
