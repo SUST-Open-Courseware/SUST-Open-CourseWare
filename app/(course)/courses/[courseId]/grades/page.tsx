@@ -2,7 +2,7 @@ import { auth } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 
 import { FileText, ShieldCheck } from "lucide-react";
-import { buttonVariants } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import {
     Table,
@@ -58,13 +58,23 @@ const GradePage = async ({
             <div className="flex items-center justify-between space-y-2">
                 <h2 className="text-3xl font-bold tracking-tight">Grades</h2>
                 <div className="flex items-center space-x-2">
-                    <Link href="grades/certificate" className={buttonVariants()}>
-                        <ShieldCheck className="mr-2" />
-                        Apply for Certificate
+                    <Link href="grades/certificate">
+                        <Button
+                            type="button"
+                            variant="success"
+                            className="w-full relative">
+                            <ShieldCheck className="mr-2" />
+                            Apply for Certificate
+                        </Button>
                     </Link>
-                    <Link href="/dashboard" className={buttonVariants()}>
-                        <FileText className="mr-2" />
-                        Download PDF
+                    <Link href="/dashboard">
+                        <Button
+                            type="button"
+                            variant="success"
+                            className="w-full relative">
+                            <FileText className="mr-2" />
+                            Download PDF
+                        </Button>
                     </Link>
                 </div>
             </div>
