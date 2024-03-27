@@ -3,8 +3,8 @@ import Image from "next/image";
 export const Logo = () => {
   return (
     <Image
-      height={120}
-      width={120}
+      height={60}
+      width={60}
       alt="logo"
       src="/sust_couseware_logo.jpeg"
     />
