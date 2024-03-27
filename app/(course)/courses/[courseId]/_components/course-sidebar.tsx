@@ -48,9 +48,7 @@ export const CourseSidebar = async ({
         </h1>
         {purchase && (
           <Link href={`/courses/${course.id}/grades`}>
-            <CourseGradeButton
-              examCount={13}
-            />
+            <CourseGradeButton/>
           </Link>
         )}
         {purchase && (
