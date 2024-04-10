@@ -26,12 +26,12 @@ export default async function Dashboard() {
   ];
 
   return (
-    <div className="p-6 space-y-6">
-      <div className="px-10">
+    <div className="sm:p-0 p-6 space-y-6">
+      <div className="px-10 sm:hidden">
         <ImageSlideshow images={imageData} /> {/* Client component with image data */}
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <InfoCard icon={Clock} label="In Progress" numberOfItems={coursesInProgress.length} />
         <InfoCard icon={CheckCircle} label="Completed" numberOfItems={completedCourses.length} variant="success" />
       </div>
