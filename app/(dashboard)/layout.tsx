@@ -11,10 +11,7 @@ const DashboardLayout = ({
       <div className="h-[80px] fixed w-full z-50">
         <Navbar />
       </div>
-      <div className="hidden md:flex pt-[80px] h-full w-60 flex-col fixed z-50">
-        <Sidebar />
-      </div>
-      <main className="md:pl-60  pt-[80px] h-full">
+      <main className="p-20 pt-[80px] h-full">
         {children}
       </main>
     </div>

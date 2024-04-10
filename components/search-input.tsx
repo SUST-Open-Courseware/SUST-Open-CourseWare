@@ -33,12 +33,12 @@ export const SearchInput = () => {
   return (
     <div className="relative">
       <Search
-        className="h-4 w-4 absolute top-3 left-3 text-sky-700"
+        className="h-4 w-4 absolute top-4 left-3 text-gray-400"
       />
       <Input
         onChange={(e) => setValue(e.target.value)}
         value={value}
-        className="w-full md:w-[400px] pl-9 rounded-md bg-slate-100 focus-visible:ring-slate-200"
+        className="w-full md:w-[450px] h-12 pl-9 rounded-xl border-0 bg-gray-100 focus-visible:ring-slate-200"
         placeholder="Search for a course"
         onKeyDown={(e) => {
           if (e.key === "Enter") {
