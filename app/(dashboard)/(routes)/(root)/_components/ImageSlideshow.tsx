@@ -68,8 +68,10 @@ export default function ImageSlideshow({ images }: { images: ImageData[] }) {
         <div className="relative overflow-hidden rounded-3xl" style={{ height: "400px" }}>
             <div className="absolute top-0 left-0 w-full h-full rounded-3xl" style={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }}>
                 <div className="absolute top-3/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center text-white z-10">
-                    <p className="text-lg font-semibold">"Empowering Minds, Unlocking Futures: Explore Boundless Knowledge with SUST Open Course Ware \- Where Excellence Meets Accessible Education."
+                    <p className="text-lg font-semibold">
+                        {`"Empowering Minds, Unlocking Futures: Explore Boundless Knowledge with SUST Open Course Ware - Where Excellence Meets Accessible Education."`}
                     </p>
+
                 </div>
             </div>
 
