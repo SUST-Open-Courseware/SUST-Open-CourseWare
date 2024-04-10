@@ -71,7 +71,11 @@ export default function ImageSlideshow({ images }: { images: ImageData[] }) {
                     <p className="text-lg font-semibold drop-shadow-lg">
                         {`"Empowering Minds, Unlocking Futures: Explore Boundless Knowledge with SUST Open Course Ware - Where Excellence Meets Accessible Education."`}
                     </p>
-
+                </div>
+                <div className="p-2 bg-gray-400 bg-opacity-40 rounded-2xl absolute top-1/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center text-white z-10">
+                    <p className="text-2xl font-semibold drop-shadow-lg">
+                        {`Bangladesh's Pioneering Open Course Ware Platform`}
+                    </p>
                 </div>
             </div>
 
