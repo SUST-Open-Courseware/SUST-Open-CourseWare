@@ -19,6 +19,10 @@ const guestRoutes = [
     label: "Browse",
     href: "/search",
   },
+  {
+    label: "About",
+    href: "/about",
+  }
 ];
 
 const teacherRoutes = [
@@ -32,6 +36,10 @@ const teacherRoutes = [
     label: "Analytics",
     href: "/teacher/analytics",
   },
+  {
+    label: "About",
+    href: "/about",
+  }
 ]
 
 export const Navbar = () => {
