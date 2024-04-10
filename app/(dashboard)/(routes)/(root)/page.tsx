@@ -26,8 +26,8 @@ export default async function Dashboard() {
   ];
 
   return (
-    <div className="sm:p-0 p-6 space-y-6">
-      <div className="px-10 sm:hidden">
+    <div className="space-y-6">
+      <div className="px-10">
         <ImageSlideshow images={imageData} /> {/* Client component with image data */}
       </div>
 
