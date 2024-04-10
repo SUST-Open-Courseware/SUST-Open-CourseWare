@@ -68,8 +68,8 @@ export const Navbar = () => {
       </div>
       <div className="hidden md:flex pt-4 space-x-6">
         {
-          routes.map((route) =>
-            <NavbarItem href={route.href} label={route.label} />
+          routes.map((route, index) =>
+            <NavbarItem href={route.href} label={route.label} key={index} />
           )
         }
       </div>
