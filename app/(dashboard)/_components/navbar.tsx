@@ -36,10 +36,6 @@ const teacherRoutes = [
     label: "Analytics",
     href: "/teacher/analytics",
   },
-  {
-    label: "About",
-    href: "/about",
-  }
 ]
 
 export const Navbar = () => {
