@@ -67,15 +67,7 @@ const GradePage = async ({
                             Apply for Certificate
                         </Button>
                     </Link>
-                    <Link href="/dashboard">
-                        <Button
-                            type="button"
-                            variant="success"
-                            className="w-full relative">
-                            <FileText className="mr-2" />
-                            Download PDF
-                        </Button>
-                    </Link>
+
                 </div>
             </div>
 
