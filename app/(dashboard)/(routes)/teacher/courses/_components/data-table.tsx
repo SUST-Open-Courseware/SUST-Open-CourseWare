@@ -62,16 +62,16 @@ export function DataTable<TData, TValue>({
           onChange={(event) =>
             table.getColumn("title")?.setFilterValue(event.target.value)
           }
-          className="max-w-sm"
+          className="max-w-sm rounded-2xl bg-gray-100 border-0 focus-visible:ring-slate-200"
         />
         <Link href="/teacher/create">
-          <Button>
+          <Button className="bg-blue-600 hover:bg-blue-700 rounded-full">
             <PlusCircle className="h-4 w-4 mr-2" />
             New course
           </Button>
         </Link>
       </div>
-      <div className="rounded-md border">
+      <div className="rounded-2xl border">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -82,9 +82,9 @@ export function DataTable<TData, TValue>({
                       {header.isPlaceholder
                         ? null
                         : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
                     </TableHead>
                   )
                 })}
@@ -118,6 +118,7 @@ export function DataTable<TData, TValue>({
       <div className="flex items-center justify-end space-x-2 py-4">
         <Button
           variant="outline"
+          className="rounded-2xl"
           size="sm"
           onClick={() => table.previousPage()}
           disabled={!table.getCanPreviousPage()}
@@ -125,7 +126,7 @@ export function DataTable<TData, TValue>({
           Previous
         </Button>
         <Button
-          variant="outline"
+          className="bg-gray-100 rounded-2xl text-gray-800"
           size="sm"
           onClick={() => table.nextPage()}
           disabled={!table.getCanNextPage()}
@@ -133,6 +134,6 @@ export function DataTable<TData, TValue>({
           Next
         </Button>
       </div>
-    </div>
+    </div >
   )
 }
