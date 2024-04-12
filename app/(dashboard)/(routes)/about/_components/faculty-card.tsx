@@ -22,7 +22,7 @@ const FacultyCard: React.FC<FacultyCardProps> = ({
                     className="rounded-2xl"
                 />
             </div>
-            <p className="font-semibold gray-700">{name}</p>
+            <p className="font-semibold text-gray-700">{name}</p>
             <p className="text-sm text-gray-600">{designation}</p>
         </div>
     );

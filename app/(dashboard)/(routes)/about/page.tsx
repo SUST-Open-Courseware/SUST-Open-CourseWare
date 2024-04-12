@@ -52,7 +52,7 @@ export default async function AboutPage() {
             <div>
                 <p className="font-extrabold text-xl mb-2">Meet The Faculty</p>
                 <p className="text-sm mb-4 text-gray-700">Introducing the Faces Behind the Knowledge</p>
-                <div className="grid grid-cols-4 gap-2">
+                <div className="grid md:grid-cols-4 grid-cols-1 gap-2">
                     {
                         facultyList.map((faculty, index) => (
                             <FacultyCard
