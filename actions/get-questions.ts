@@ -24,13 +24,13 @@ export const getQuestions = async ({
 
         let questions: Question[] = [];
 
-        if (purchase) {
-            questions = await db.question.findMany({
-                where: {
-                    quizId: quizId
-                }
-            });
-        }
+        // if (purchase) {
+        questions = await db.question.findMany({
+            where: {
+                quizId: quizId
+            }
+        });
+        // }
 
         return {
             questions

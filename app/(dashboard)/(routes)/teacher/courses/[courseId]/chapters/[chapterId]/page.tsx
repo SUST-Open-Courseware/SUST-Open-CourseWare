@@ -1,7 +1,7 @@
 import { auth } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, Eye, File, LayoutDashboard, Video } from "lucide-react";
+import { ArrowLeft, Eye, File, LayoutDashboard, Video, FileQuestion } from "lucide-react";
 
 import { db } from "@/lib/db";
 import { IconBadge } from "@/components/icon-badge";
@@ -13,6 +13,7 @@ import { ChapterAccessForm } from "./_components/chapter-access-form";
 import { ChapterVideoForm } from "./_components/chapter-video-form";
 import { ChapterActions } from "./_components/chapter-actions";
 import { AttachmentForm } from "./_components/attachment-form";
+import { QuizForm } from "./_components/quiz-form";
 
 const ChapterIdPage = async ({
   params
@@ -37,6 +38,7 @@ const ChapterIdPage = async ({
           createdAt: "desc",
         },
       },
+      quizes: true
     },
   });
 
@@ -126,32 +128,47 @@ const ChapterIdPage = async ({
                 chapterId={params.chapterId}
               />
             </div>
-          </div>
-          <div>
-            <div className="flex items-center gap-x-2">
-              <IconBadge icon={Video} />
-              <h2 className="text-xl">
-                Add a video
-              </h2>
+            <div>
+              <div className="flex items-center gap-x-2">
+                <IconBadge icon={File} />
+                <h2 className="text-xl">
+                  Resources & Attachments
+                </h2>
+              </div>
+              <AttachmentForm
+                initialData={chapter}
+                courseId={params.courseId}
+                chapterId={params.chapterId}
+              />
             </div>
-            <ChapterVideoForm
-              initialData={chapter}
-              chapterId={params.chapterId}
-              courseId={params.courseId}
-            />
           </div>
-          <div>
-            <div className="flex items-center gap-x-2">
-              <IconBadge icon={File} />
-              <h2 className="text-xl">
-                Resources & Attachments
-              </h2>
+          <div className="space-y-4">
+            <div>
+              <div className="flex items-center gap-x-2">
+                <IconBadge icon={Video} />
+                <h2 className="text-xl">
+                  Add a video
+                </h2>
+              </div>
+              <ChapterVideoForm
+                initialData={chapter}
+                chapterId={params.chapterId}
+                courseId={params.courseId}
+              />
             </div>
-            <AttachmentForm
-              initialData={chapter}
-              courseId={params.courseId}
-              chapterId={params.chapterId}
-            />
+            <div>
+              <div className="flex items-center gap-x-2">
+                <IconBadge icon={FileQuestion} />
+                <h2 className="text-xl">
+                  Tests
+                </h2>
+              </div>
+              <QuizForm
+                initialData={chapter}
+                chapterId={params.chapterId}
+                courseId={params.courseId}
+              />
+            </div>
           </div>
         </div>
       </div>
