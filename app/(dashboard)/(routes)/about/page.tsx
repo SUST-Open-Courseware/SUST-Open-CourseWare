@@ -17,6 +17,11 @@ export default async function AboutPage() {
                 source: "/faculty/salim.jpg"
             },
             {
+                name: "Mohammad Abdullah Al Mumin, PhD",
+                designation: "Professor",
+                source: "/faculty/default.jpg"
+            },
+            {
                 name: "Md Masum",
                 designation: "Professor & Head",
                 source: "/faculty/masum.jpg",
@@ -25,7 +30,7 @@ export default async function AboutPage() {
                 name: "Dr. Md Forhad Rabbi, SMIEEE",
                 designation: "Professor",
                 source: "/faculty/rabbi.png"
-            }
+            },
         ];
 
     const aboutUsText = `SUST Open Courseware (SUST OCW) is a pioneering initiative from Shahjalal University of Science & Technology (SUST), designed to democratize access to high-quality education. It functions as a self-contained online platform, operating alongside the university's established academic programs. SUST OCW goes beyond traditional course delivery methods, providing an intuitive and user-friendly interface for various stakeholders. Explore a wide range of courses across diverse disciplines!`;
