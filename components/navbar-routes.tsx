@@ -61,20 +61,6 @@ export const NavbarRoutes = () => {
 
       }
       <div className="flex gap-x-4 ml-auto">
-        {/* {isTeacherPage || isCoursePage ? (
-          <Link href="/">
-            <div className="bg-sky-200 text-sky-700 w-12 h-12 rounded-full flex items-center justify-center">
-              <LogOut />
-            </div>
-          </Link>
-        ) : isTeacher(userId) ? (
-          <Link href="/teacher/courses">
-            <div className="bg-emerald-200 text-emerald-700 w-12 h-12 rounded-full flex items-center justify-center">
-              <PersonStanding />
-            </div>
-          </Link>
-        ) : null} */}
-
 
         {
           isCoursePage ? (
@@ -92,11 +78,12 @@ export const NavbarRoutes = () => {
                 <Grip />
               </button>
               {isOpen && (
-                <ul className="absolute mt-1 shadow-md rounded-lg bg-white z-50 overflow-hidden">
+                <ul className="absolute mt-1 shadow-md bg-gray-100 z-50 overflow-hidden p-2 rounded-2xl divide-y divide-gray-100">
                   {dropDowns.map((item) => (
                     <li
                       key={item.value}
-                      className="block px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                      className={`block px-4 py-2 hover:bg-gray-50 cursor-pointer bg-white ${item === dropDowns[0] ? 'rounded-t-xl' : ''
+                        } ${item === dropDowns[dropDowns.length - 1] ? 'rounded-b-xl' : ''}`}
                       onClick={() => handleClick(item)}
                     >
                       {item.label}

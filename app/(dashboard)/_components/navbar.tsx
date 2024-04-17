@@ -7,6 +7,7 @@ import { MobileSidebar } from "./mobile-sidebar";
 import { Logo } from "./logo";
 import { BarChart, Compass, Layout, List } from "lucide-react";
 import { NavbarItem } from "./navbar-item";
+import Link from "next/link";
 
 const guestRoutes = [
   {
@@ -44,6 +45,7 @@ export const Navbar = () => {
   const pathname = usePathname();
 
   const isTeacherPage = pathname?.includes("/teacher");
+  const homePage = isTeacherPage ? "/teacher/courses" : "/";
 
   const routes = isTeacherPage ? teacherRoutes : guestRoutes;
 
@@ -64,8 +66,12 @@ export const Navbar = () => {
     <div className={`px-10 pt-4 bg-white ${scrolled ? "shadow-md" : ""}`}>
       <div className={`flex items-center`}>
         <div className="hidden md:flex mr-auto items-center">
-          <Logo />
-          <p className="ml-4 text-lg text-gray-500 text-center">SUST OCW</p>
+          <Link href={homePage}>
+            <div className="flex flex-cols items-center">
+              <Logo />
+              <p className="ml-4 text-lg text-gray-500 text-center">SUST OCW</p>
+            </div>
+          </Link>
         </div>
         <MobileSidebar />
         <NavbarRoutes />
