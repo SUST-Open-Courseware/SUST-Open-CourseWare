@@ -14,11 +14,11 @@ interface CertificateData {
 const data: CertificateData = {
   logo: 'https://seeklogo.com/images/S/shahjalal-university-of-science-and-technology-logo-F34BC01F81-seeklogo.com.png',
   name: 'Nayem Islam',
-  course: 'Data Structure and Algorithm using JavaScript',
-  dateOfConductStart: '2020-05-20',
-  dateOfConductEnd: '2023-05-20',
+  course: 'Java 17 Masterclass: Start Coding in 2024',
+  dateOfConductStart: '2024-04-17',
+  dateOfConductEnd: '2024-04-17',
   signature: 'https://a.storyblok.com/f/191576/1200x800/b7ad4902a2/signature_maker_after_.webp',
-  signatureDetails: 'CEO, CipherGuy',
+  signatureDetails: 'Head, SUST CSE',
 };
 
 const CertificateGenerator = () => {
